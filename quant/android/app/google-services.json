@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "451006927952",
+    "project_id": "quant-221f9",
+    "storage_bucket": "quant-221f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:451006927952:android:de4a0147f070576e0c2d55",
+        "android_client_info": {
+          "package_name": "com.example.quant"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRJDr_aD1FRWRA03f4Pc7K4Pdr917phi0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
