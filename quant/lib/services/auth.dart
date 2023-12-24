@@ -9,9 +9,7 @@ class AuthService{
   {
     try
     {
-      UserCredential result = await _auth.signInAnonymously();
-      User? user = result.user;
-      return user;
+      return (await _auth.signInAnonymously()).user;
     }
     catch (exception)
     {
