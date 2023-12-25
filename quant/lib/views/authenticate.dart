@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:quant/models/user.dart';
 import 'package:quant/services/auth.dart';
+import 'package:quant/views/home.dart';
+import 'package:quant/views/sign_up.dart';
 
 class Authenticate extends StatefulWidget {
   const Authenticate({super.key});
@@ -10,7 +13,7 @@ class Authenticate extends StatefulWidget {
 
 class _AuthenticateState extends State<Authenticate> {
 
-  final AuthService _auth = AuthService();
+  final AuthService auth = AuthService();
   Color primarydarkBlue = const Color.fromARGB(255, 67, 69, 125);
   Color secondaryDarkBlue = const Color.fromARGB(255, 134, 136, 209);
   Color textColour = const Color.fromARGB(255, 61, 61, 61);
@@ -24,7 +27,7 @@ class _AuthenticateState extends State<Authenticate> {
         children: [
           Container(
             width: 320,
-            height: 800,
+            height: 720,
             color: Colors.white,// make this check if it is on a desktop monitor if so make it grey, else on a mobile make it white
             child: Column(
               children: [
@@ -33,7 +36,7 @@ class _AuthenticateState extends State<Authenticate> {
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "WELCOME",
+                      "LOG IN",
                       style: TextStyle(
                         color: textColour,
                         fontSize: 24,
@@ -83,7 +86,7 @@ class _AuthenticateState extends State<Authenticate> {
                     child: Center(
                       child: TextButton(
                         onPressed: () async {
-                    
+                          //print("User after logging out (should be null): ${auth.returnCurrentUser()}");
                         },
                         child: const Icon(
                           Icons.login,
@@ -103,8 +106,16 @@ class _AuthenticateState extends State<Authenticate> {
                       }
                     },
                     onPressed: () async {
-                        dynamic result = await _auth.SignInAnon();
-                        print(result);
+                        AnonymousUser? result = await auth.signInAnon();
+                        
+                        if (result != null){
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
+                          print("Signed in anonymously with:  ${result.userId}");
+                        }
+                        else
+                        {
+                          print("Error: Unable to sign in");
+                        }
                     },
                     child: Text(
                       "or enter anonymously",
@@ -130,7 +141,7 @@ class _AuthenticateState extends State<Authenticate> {
               ),
               TextButton(
                 onPressed: () {
-                  // sign up logic here
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUp()));
                 },
                 child: Text(
                   "Sign Up",
