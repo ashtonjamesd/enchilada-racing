@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quant/globals.dart';
 import 'package:quant/models/user.dart';
 import 'package:quant/services/auth.dart';
 import 'package:quant/views/home.dart';
@@ -14,9 +15,9 @@ class Authenticate extends StatefulWidget {
 class _AuthenticateState extends State<Authenticate> {
 
   final AuthService auth = AuthService();
-  Color primarydarkBlue = const Color.fromARGB(255, 67, 69, 125);
-  Color secondaryDarkBlue = const Color.fromARGB(255, 134, 136, 209);
-  Color textColour = const Color.fromARGB(255, 61, 61, 61);
+
+  String email = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -31,12 +32,12 @@ class _AuthenticateState extends State<Authenticate> {
             color: Colors.white,// make this check if it is on a desktop monitor if so make it grey, else on a mobile make it white
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 32, top: 160),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 32, top: 160),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
-                      "LOG IN",
+                      "SIGN IN",
                       style: TextStyle(
                         color: textColour,
                         fontSize: 24,
@@ -45,28 +46,38 @@ class _AuthenticateState extends State<Authenticate> {
                     ),
                   ),
                 ),
-                TextField(
+                TextFormField(
+                  onChanged: (text) {
+                    setState(() {
+                      email = text;
+                    });
+                  },
                   cursorColor: Colors.grey,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "EMAIL",
                     labelStyle: TextStyle(
                       color: textColour,
                       fontSize: 14,
                     ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   ),
                 ),
                 const SizedBox(height:16),
-                TextField(
+                TextFormField(
+                  onChanged: (text) {
+                    setState(() {
+                      password = text;
+                    });
+                  },
                   cursorColor: Colors.grey,
                   obscureText: true,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: "PASSWORD",
                     labelStyle: TextStyle(
                       color: textColour,
                       fontSize: 14,
                     ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                    contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                   ),
                 ),
                 Padding(
@@ -76,7 +87,7 @@ class _AuthenticateState extends State<Authenticate> {
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [
                           primarydarkBlue,
                           secondaryDarkBlue,
@@ -132,7 +143,7 @@ class _AuthenticateState extends State<Authenticate> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Don't have an account?",
                 style: TextStyle(
                   color: textColour,
@@ -143,7 +154,7 @@ class _AuthenticateState extends State<Authenticate> {
                 onPressed: () {
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUp()));
                 },
-                child: Text(
+                child: const Text(
                   "Sign Up",
                   style: TextStyle(
                     color: textColour,

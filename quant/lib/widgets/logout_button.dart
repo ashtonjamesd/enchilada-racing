@@ -1,22 +1,27 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quant/services/auth.dart';
-import 'package:quant/views/authenticate.dart';
+import 'package:quant/views/sign_in.dart';
 
 class LogoutButton extends StatelessWidget {
   LogoutButton({super.key});
 
   final AuthService auth = AuthService();
-  final FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: () {
-        auth.logoutCurrentUser();
-        print("Logged out with: \t\t${firebaseAuth.currentUser?.uid}");
-        auth.logoutCurrentUser();
-        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Authenticate()));
+      onPressed: () async {
+        try 
+        {
+          await auth.signOutCurrentUser();
+          print("Logged out with: \t\t${FirebaseAuth.instance.currentUser?.uid}"); // should be null
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Authenticate()));
+        } 
+        catch (exception) 
+        {
+          print("Error logging out: $exception");
+        }
       },
       child: const Icon(
         Icons.logout,

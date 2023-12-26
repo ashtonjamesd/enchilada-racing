@@ -15,9 +15,7 @@ class AuthService{
   {
     try
     {
-      User? user = (await auth.signInAnonymously()).user;
-      print("\nFirebase User: \t\t${user?.uid}\n");
-    
+      User? user = (await auth.signInAnonymously()).user;    
       return createQuantUser(user);
     }
     catch (exception)
@@ -27,7 +25,7 @@ class AuthService{
     }
   }
 
-  Future logoutCurrentUser() async 
+  Future? signOutCurrentUser() async 
   {
     try
     {

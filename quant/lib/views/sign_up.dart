@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:quant/models/user.dart';
+import 'package:quant/globals.dart';
 import 'package:quant/services/auth.dart';
-import 'package:quant/views/authenticate.dart';
-import 'package:quant/views/home.dart';
+import 'package:quant/views/sign_in.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
   SignUp({super.key});
 
-  final AuthService _auth = AuthService();
+  @override
+  State<SignUp> createState() => _SignUpState();
+}
 
-  final Color primarydarkBlue = const Color.fromARGB(255, 67, 69, 125);
-  final Color secondaryDarkBlue = const Color.fromARGB(255, 134, 136, 209);
-  final Color textColour = const Color.fromARGB(255, 61, 61, 61);
+class _SignUpState extends State<SignUp> {
+
+  final _formKey = GlobalKey<FormState>();
+
+  String email = "";
+  String password = "";
 
   @override
   Widget build(BuildContext context) {
@@ -26,8 +30,8 @@ class SignUp extends StatelessWidget {
             color: Colors.white,// make this check if it is on a desktop monitor if so make it grey, else on a mobile make it white
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 32, top: 160),
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 32, top: 160),
                   child: Align(
                     alignment: Alignment.topLeft,
                     child: Text(
@@ -40,28 +44,49 @@ class SignUp extends StatelessWidget {
                     ),
                   ),
                 ),
-                TextField(
-                  cursorColor: Colors.grey,
-                  decoration: InputDecoration(
-                    labelText: "EMAIL",
-                    labelStyle: TextStyle(
-                      color: textColour,
-                      fontSize: 14,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  ),
-                ),
-                const SizedBox(height:16),
-                TextField(
-                  cursorColor: Colors.grey,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: "PASSWORD",
-                    labelStyle: TextStyle(
-                      color: textColour,
-                      fontSize: 14,
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: TextFormField(
+                          validator: (text) => text!.isEmpty ? 'Email required' : null,
+                          onChanged: (text) {
+                            setState(() {
+                              email = text;
+                            });
+                          },
+                          cursorColor: Colors.grey,
+                          decoration: const InputDecoration(
+                            labelText: "EMAIL",
+                            labelStyle: TextStyle(
+                              color: textColour,
+                              fontSize: 14,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          ),
+                        ),
+                      ),
+                      TextFormField(
+                        validator: (text) => text!.length < 8 ? "Password must be 8 characters or more" : null,
+                        onChanged: (text){
+                          setState(() {
+                            password = text;
+                          });
+                        },
+                        cursorColor: Colors.grey,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: "PASSWORD",
+                          labelStyle: TextStyle(
+                            color: textColour,
+                            fontSize: 14,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
@@ -71,7 +96,7 @@ class SignUp extends StatelessWidget {
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         colors: [
                           primarydarkBlue,
                           secondaryDarkBlue,
@@ -81,7 +106,10 @@ class SignUp extends StatelessWidget {
                     child: Center(
                       child: TextButton(
                         onPressed: () async {
-                    
+                          if (_formKey.currentState!.validate())
+                          {
+                            
+                          }
                         },
                         child: const Icon(
                           Icons.login,
@@ -95,22 +123,8 @@ class SignUp extends StatelessWidget {
                 Align(
                   alignment: Alignment.topLeft,
                   child: TextButton(
-                    onHover: (isHovering) {
-                      if (isHovering){
-                  
-                      }
-                    },
                     onPressed: () async {
-                        AnonymousUser? result = await _auth.signInAnon();
                         
-                        if (result != null){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
-                          print("Signed in anonymously with:  ${result.userId}");
-                        }
-                        else
-                        {
-                          print("Error: Unable to sign in");
-                        }
                     },
                     child: Text(
                       "or enter anonymously",
@@ -127,7 +141,7 @@ class SignUp extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Already have an account?",
                 style: TextStyle(
                   color: textColour,
@@ -138,7 +152,7 @@ class SignUp extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Authenticate()));
                 },
-                child: Text(
+                child: const Text(
                   "Log in",
                   style: TextStyle(
                     color: textColour,
