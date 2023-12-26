@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
 import 'package:quant/models/user.dart';
@@ -5,19 +6,22 @@ import 'package:quant/services/auth.dart';
 import 'package:quant/views/home.dart';
 import 'package:quant/views/sign_up.dart';
 
-class Authenticate extends StatefulWidget {
-  const Authenticate({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
 
   @override
-  State<Authenticate> createState() => _AuthenticateState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _AuthenticateState extends State<Authenticate> {
+class _SignInState extends State<SignIn> {
 
   final AuthService auth = AuthService();
 
+  final _formKey = GlobalKey<FormState>();
+
   String email = "";
   String password = "";
+  String errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -46,38 +50,49 @@ class _AuthenticateState extends State<Authenticate> {
                     ),
                   ),
                 ),
-                TextFormField(
-                  onChanged: (text) {
-                    setState(() {
-                      email = text;
-                    });
-                  },
-                  cursorColor: Colors.grey,
-                  decoration: const InputDecoration(
-                    labelText: "EMAIL",
-                    labelStyle: TextStyle(
-                      color: textColour,
-                      fontSize: 14,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                  ),
-                ),
-                const SizedBox(height:16),
-                TextFormField(
-                  onChanged: (text) {
-                    setState(() {
-                      password = text;
-                    });
-                  },
-                  cursorColor: Colors.grey,
-                  obscureText: true,
-                  decoration: const InputDecoration(
-                    labelText: "PASSWORD",
-                    labelStyle: TextStyle(
-                      color: textColour,
-                      fontSize: 14,
-                    ),
-                    contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: TextFormField(
+                          validator: (text) => text!.isEmpty ? "Email required" : null,
+                          onChanged: (text) {
+                            setState(() {
+                              email = text;
+                            });
+                          },
+                          cursorColor: Colors.grey,
+                          decoration: const InputDecoration(
+                            labelText: "EMAIL",
+                            labelStyle: TextStyle(
+                              color: textColour,
+                              fontSize: 14,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          ),
+                        ),
+                      ),
+                      TextFormField(
+                        validator: (text) => text!.isEmpty ? "Password required" : null,
+                        onChanged: (text) {
+                          setState(() {
+                            password = text;
+                          });
+                        },
+                        cursorColor: Colors.grey,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          labelText: "PASSWORD",
+                          labelStyle: TextStyle(
+                            color: textColour,
+                            fontSize: 14,
+                          ),
+                          contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 Padding(
@@ -97,7 +112,23 @@ class _AuthenticateState extends State<Authenticate> {
                     child: Center(
                       child: TextButton(
                         onPressed: () async {
-                          //print("User after logging out (should be null): ${auth.returnCurrentUser()}");
+                          if (_formKey.currentState!.validate()){
+                            dynamic result = await auth.quantSignInWithEmailAndPassword(email, password);
+
+                            if (result == null)
+                            {
+                              setState(() {
+                                errorMessage = "Invalid email or password";
+                              });
+                            }
+                            else
+                            {
+                              setState(() {
+                                errorMessage = "";
+                              });
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
+                            }
+                          }
                         },
                         child: const Icon(
                           Icons.login,
@@ -111,17 +142,12 @@ class _AuthenticateState extends State<Authenticate> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: TextButton(
-                    onHover: (isHovering) {
-                      if (isHovering){
-                  
-                      }
-                    },
                     onPressed: () async {
-                        AnonymousUser? result = await auth.signInAnon();
+                        User? result = await auth.quantSignInAnonymously();
                         
                         if (result != null){
                           Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
-                          print("Signed in anonymously with:  ${result.userId}");
+                          print("Signed in anonymously with:  ${result.uid}");
                         }
                         else
                         {
@@ -134,6 +160,17 @@ class _AuthenticateState extends State<Authenticate> {
                         color: textColour.withOpacity(0.8), 
                         fontWeight: FontWeight.bold,
                       ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 16),
+                  child: Text(
+                    errorMessage,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.red,
                     ),
                   ),
                 ),

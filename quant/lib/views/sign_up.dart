@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
 import 'package:quant/services/auth.dart';
+import 'package:quant/views/home.dart';
 import 'package:quant/views/sign_in.dart';
 
 class SignUp extends StatefulWidget {
@@ -12,10 +13,12 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
 
+  AuthService auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   String email = "";
   String password = "";
+  String errorMessage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +111,21 @@ class _SignUpState extends State<SignUp> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate())
                           {
-                            
+                            dynamic result = await auth.quantSignUpWithEmailAndPassword(email, password);
+
+                            if (result == null)
+                            {
+                              setState(() {
+                                errorMessage = "Invalid email or password";
+                              });
+                            }
+                            else
+                            {
+                              setState(() {
+                                errorMessage = "";
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignIn()));
+                              });
+                            }
                           }
                         },
                         child: const Icon(
@@ -120,21 +137,26 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                 ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: TextButton(
-                    onPressed: () async {
-                        
-                    },
-                    child: Text(
-                      "or enter anonymously",
-                        style: TextStyle(
-                        color: textColour.withOpacity(0.8), 
-                        fontWeight: FontWeight.bold,
+                Column(
+                  children: [
+                    Text(
+                      errorMessage,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.red,
                       ),
                     ),
-                  ),
-                ),
+                    Text(
+                      errorMessage.isEmpty? "" : "Maybe you entered your email incorrectly?",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                )
               ],
             ),
           ),
@@ -150,7 +172,7 @@ class _SignUpState extends State<SignUp> {
               ),
               TextButton(
                 onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Authenticate()));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignIn()));
                 },
                 child: const Text(
                   "Log in",

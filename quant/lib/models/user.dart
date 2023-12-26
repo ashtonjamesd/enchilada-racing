@@ -1,6 +1,6 @@
-class AnonymousUser{
+class QuantUser{
 
   final String userId;
 
-  AnonymousUser({required this.userId});
+  QuantUser({required this.userId});
 }

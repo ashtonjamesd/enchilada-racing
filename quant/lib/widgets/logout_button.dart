@@ -14,9 +14,9 @@ class LogoutButton extends StatelessWidget {
       onPressed: () async {
         try 
         {
-          await auth.signOutCurrentUser();
+          await auth.quantSignOutCurrentUser();
           print("Logged out with: \t\t${FirebaseAuth.instance.currentUser?.uid}"); // should be null
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Authenticate()));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignIn()));
         } 
         catch (exception) 
         {
