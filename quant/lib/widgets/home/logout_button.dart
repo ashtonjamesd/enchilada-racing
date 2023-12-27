@@ -10,21 +10,22 @@ class LogoutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return IconButton(
       onPressed: () async {
         try 
         {
           await auth.quantSignOutCurrentUser();
           print("Logged out with: \t\t${FirebaseAuth.instance.currentUser?.uid}");
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignIn()));
         } 
         catch (exception) 
         {
           print("Error logging out: $exception");
         }
       },
-      child: const Icon(
+      icon: const Icon(
         Icons.logout,
-        color: Colors.black,
+        color: Colors.white,
       ),
     );
   }

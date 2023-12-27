@@ -8,7 +8,6 @@ import 'package:quant/widgets/loading.dart';
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
   
-
   @override
   State<SignIn> createState() => _SignInState();
 }
@@ -26,8 +25,6 @@ class _SignInState extends State<SignIn> {
   
   @override
   Widget build(BuildContext context) {
-
-    bool isDesktop = MediaQuery.sizeOf(context).width > 600 ? true : false;
 
     return loading == true ? const LoadingIcon() : Scaffold(
       backgroundColor: Colors.white,
@@ -86,7 +83,7 @@ class _SignInState extends State<SignIn> {
                           });
                         },
                         cursorColor: Colors.grey,
-                        //obscureText: true, // causes null value error, maybe with auto fill from chrome
+                        obscureText: true, // causes null value error, maybe with auto fill from chrome
                         decoration: const InputDecoration(
                           labelText: "PASSWORD",
                           labelStyle: TextStyle(
@@ -133,8 +130,8 @@ class _SignInState extends State<SignIn> {
                               setState(() {
                                 errorMessage = "";
                                 loading = false;
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
                               });
-                              //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
                             }
                           }
                         },

@@ -17,6 +17,7 @@ class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
 
+  String username = "";
   String email = "";
   String password = "";
   String errorMessage = "";
@@ -52,6 +53,26 @@ class _SignUpState extends State<SignUp> {
                   key: _formKey,
                   child: Column(
                     children: [
+                    Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: TextFormField(
+                          validator: (text) => text!.length < 3 ? 'Username must be 3 characters or more' : null,
+                          onChanged: (text) {
+                            setState(() {
+                              username = text;
+                            });
+                          },
+                          cursorColor: Colors.grey,
+                          decoration: const InputDecoration(
+                            labelText: "USERNAME",
+                            labelStyle: TextStyle(
+                              color: textColour,
+                              fontSize: 14,
+                            ),
+                            contentPadding: EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                          ),
+                        ),
+                      ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: 16),
                         child: TextFormField(
@@ -113,7 +134,7 @@ class _SignUpState extends State<SignUp> {
                           if (_formKey.currentState!.validate())
                           {
                             setState(() => loading = true);
-                            dynamic result = await auth.quantSignUpWithEmailAndPassword(email, password);
+                            dynamic result = await auth.quantSignUpWithEmailAndPassword(email, password, username);
 
                             if (result == null)
                             {
@@ -127,6 +148,7 @@ class _SignUpState extends State<SignUp> {
                               setState(() {
                                 errorMessage = "";
                                 loading = false;
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignIn()));                
                               });
                             }
                           }
