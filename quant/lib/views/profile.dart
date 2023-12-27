@@ -91,8 +91,9 @@ class Profile extends StatelessWidget {
                                 padding: const EdgeInsets.only(top: 8, bottom: 4),
                                 child: SizedBox(
                                   width: MediaQuery.of(context).size.width / 2.2, 
-                                  height: 2.5,
+                                  height: 3,
                                   child: LinearProgressIndicator(
+                                    borderRadius: BorderRadius.circular(16),
                                     value: snapshot.data!.experiencePoints / 10, // 10 is the next level boundary
                                     color: const Color.fromARGB(255, 87, 87, 204), 
                                     backgroundColor: Colors.grey, 

@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quant/models/user.dart';
 
 class DatabaseService{
@@ -23,7 +22,8 @@ Future<QuantUser?> quantGetUserDetails(String userId) async {
       DocumentSnapshot<Object?> documentSnapshot =
           await userCollection.doc(userId).get();
 
-      if (documentSnapshot.exists) {
+      if (documentSnapshot.exists) 
+      {
         String userId = (documentSnapshot.data() as Map<String, dynamic>?)?['userId'];
         String username = (documentSnapshot.data() as Map<String, dynamic>?)?['username'];
         int level = (documentSnapshot.data() as Map<String, dynamic>?)?['level'];
@@ -37,15 +37,10 @@ Future<QuantUser?> quantGetUserDetails(String userId) async {
                                     title: title,
                                     experiencePoints: experiencePoints, 
                                     userId: userId);
-
-        if (user != null) {
-          return user;
+        return user;
         } 
-        else {
-          print('Username not found for current user with ID: $userId');
-          return null;
-        }
-      } else {
+        else 
+        {
         print('User not found for ID: $userId');
       }
     } catch (exception) {
