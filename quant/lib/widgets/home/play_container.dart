@@ -18,6 +18,7 @@ class _PlayContainerState extends State<PlayContainer> {
         child: TextButton(
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(builder: (context) => Arithmetic()));
+            playTimer.start();
           },
           child: Container(
             width: 360,

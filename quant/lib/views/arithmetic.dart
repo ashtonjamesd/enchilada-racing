@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
 import 'package:quant/models/question.dart';
 import 'package:quant/services/arithmetic.dart';
+import 'package:quant/widgets/arithmetic/game_summary.dart';
 
 class Arithmetic extends StatefulWidget {
   Arithmetic({super.key});
@@ -13,14 +14,19 @@ class Arithmetic extends StatefulWidget {
 class _ArithmeticState extends State<Arithmetic> {
   ArithmeticService arithmetic = ArithmeticService();
 
+  IconData answerIcon = Icons.question_mark;
+  Color answerIconColour = Colors.white;
+
+  int correctAnswers = 0;
+  int questionsAnswered = 0;
+  int incorrectAnswers = 0;
+
   @override
   Widget build(BuildContext context) {
     
     ArithmeticQuestion arithmeticQuestion = arithmetic.generateQuestion();
     TextEditingController answerController = TextEditingController();
 
-    int correctAnswers = 0;
-    int questionsAnswered = 0;
 
     return Scaffold(
     backgroundColor: primaryBackgroundColour,
@@ -34,9 +40,7 @@ class _ArithmeticState extends State<Arithmetic> {
           ),
         ),
         backgroundColor: containerColour,
-        leading: const BackButton(
-          color: Colors.white,
-        ),
+        leading: GameSummary(correctAnswers: correctAnswers, incorrectAnswers: incorrectAnswers)
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -44,7 +48,7 @@ class _ArithmeticState extends State<Arithmetic> {
           Center(
             child: Container(
               width: 320,
-              height: 400,
+              height: 240,
               decoration: BoxDecoration(
                 color: containerColour,
                 borderRadius: BorderRadius.circular(8),
@@ -70,6 +74,7 @@ class _ArithmeticState extends State<Arithmetic> {
                         Padding(
                           padding: const EdgeInsets.only(right: 16),
                           child: SizedBox(
+                            height: 40,
                             width: 180,
                             child: TextField(
                               controller: answerController,
@@ -89,18 +94,32 @@ class _ArithmeticState extends State<Arithmetic> {
                           ),
                         ),
                         Container(
-                          height: 40,
+                          height: 38,
                           width: 80,
                           decoration: BoxDecoration(
                             color: const Color.fromARGB(255, 250, 250, 250),
-                            borderRadius: BorderRadius.circular(8)
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: IconButton(
                             onPressed: () {
                               questionsAnswered = questionsAnswered + 1;
           
-                              if (answerController.text == arithmeticQuestion.answer.toString()){
-                                correctAnswers = correctAnswers + 1;
+                              if (answerController.text == arithmeticQuestion.answer.toString())
+                              {
+                                
+                                setState(() {
+                                  correctAnswers = correctAnswers + 1;
+                                  answerIcon = Icons.check;
+                                  answerIconColour = Colors.green;
+                                });
+                              }
+                              else
+                              {
+                                setState(() {
+                                  incorrectAnswers = incorrectAnswers + 1;
+                                  answerIconColour = Colors.red;
+                                  answerIcon = Icons.close;
+                                });
                               }
           
                               setState(() {
@@ -109,21 +128,21 @@ class _ArithmeticState extends State<Arithmetic> {
                             }, 
                             icon: const Icon(
                               Icons.arrow_back,
-                              color: Color.fromARGB(255, 143, 143, 143),
+                              color: Color.fromARGB(255, 189, 189, 189),
                             )
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const Expanded(
+                  Expanded(
                     child: Align(
                       alignment: Alignment.bottomLeft,
                       child: Padding(
-                        padding: EdgeInsets.only(left: 8, bottom: 8),
+                        padding: const EdgeInsets.only(left: 8, bottom: 8),
                         child: Icon(
-                          Icons.question_mark,
-                          color: Colors.white,
+                          answerIcon,
+                          color: answerIconColour,
                         ),
                       ),
                     ),
