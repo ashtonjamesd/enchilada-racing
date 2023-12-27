@@ -8,7 +8,6 @@ class QuantUser{
   final int experiencePoints;
 
   final int questionsAnswered;
-  final double correctQuestions;
 
-  QuantUser({required this.questionsAnswered, required this.correctQuestions, required this.level, required this.experiencePoints, required this.userId});
+  QuantUser({required this.questionsAnswered, required this.level, required this.experiencePoints, required this.userId});
 }

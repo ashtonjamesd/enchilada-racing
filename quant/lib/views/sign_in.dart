@@ -26,15 +26,18 @@ class _SignInState extends State<SignIn> {
   
   @override
   Widget build(BuildContext context) {
+
+    bool isDesktop = MediaQuery.sizeOf(context).width > 600 ? true : false;
+
     return loading == true ? const LoadingIcon() : Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 320,
+            width: 280,
             height: 720,
-            color: Colors.white,// make this check if it is on a desktop monitor if so make it grey, else on a mobile make it white
+            color: Colors.white,
             child: Column(
               children: [
                 const Padding(
@@ -83,7 +86,7 @@ class _SignInState extends State<SignIn> {
                           });
                         },
                         cursorColor: Colors.grey,
-                        obscureText: true,
+                        //obscureText: true, // causes null value error, maybe with auto fill from chrome
                         decoration: const InputDecoration(
                           labelText: "PASSWORD",
                           labelStyle: TextStyle(
@@ -131,7 +134,7 @@ class _SignInState extends State<SignIn> {
                                 errorMessage = "";
                                 loading = false;
                               });
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
+                              //Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
                             }
                           }
                         },

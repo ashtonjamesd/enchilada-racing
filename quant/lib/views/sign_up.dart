@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
 import 'package:quant/services/auth.dart';
-import 'package:quant/views/home.dart';
 import 'package:quant/views/sign_in.dart';
 import 'package:quant/widgets/loading.dart';
 
@@ -30,9 +29,9 @@ class _SignUpState extends State<SignUp> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Container(
-            width: 320,
+            width: 280,
             height: 720,
-            color: Colors.white, // make this check if it is on a desktop monitor if so make it grey, else on a mobile make it white
+            color: Colors.white, 
             child: Column(
               children: [
                 const Padding(
@@ -128,7 +127,6 @@ class _SignUpState extends State<SignUp> {
                               setState(() {
                                 errorMessage = "";
                                 loading = false;
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignIn()));
                               });
                             }
                           }

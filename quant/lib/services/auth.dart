@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quant/models/user.dart';
+import 'package:quant/services/database.dart';
 
 class AuthService{
 
@@ -9,8 +10,7 @@ class AuthService{
                                                             userId: user.uid, 
                                                             level: 1,
                                                             experiencePoints: 0,
-                                                            questionsAnswered: 0,
-                                                            correctQuestions: 0) : null;
+                                                            questionsAnswered: 0) : null;
 
   bool checkIfUserIsLoggedIn() => auth.currentUser != null ? true : false; // not being used
 
@@ -36,7 +36,8 @@ class AuthService{
       UserCredential result = await auth.createUserWithEmailAndPassword(email: email, password: password);
       User? firebaseUser = result.user;
 
-      return createQuantUser(firebaseUser); // database stuff later
+      await DatabaseService(uid: firebaseUser!.uid).updateUserData(firebaseUser.uid, 1, 0, 0);
+      return createQuantUser(firebaseUser);
     }
     catch (exception)
     {
@@ -58,4 +59,6 @@ class AuthService{
       return null;
     }
   }
+
+  Stream<QuantUser?> get user => auth.authStateChanges().map(createQuantUser);
 }
