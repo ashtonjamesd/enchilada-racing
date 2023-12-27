@@ -3,6 +3,7 @@ import 'package:quant/globals.dart';
 import 'package:quant/models/user.dart';
 import 'package:quant/services/auth.dart';
 import 'package:quant/services/database.dart';
+import 'dart:math';
 
 class Profile extends StatelessWidget {
   Profile({Key? key});
@@ -94,19 +95,33 @@ class Profile extends StatelessWidget {
                                   height: 3,
                                   child: LinearProgressIndicator(
                                     borderRadius: BorderRadius.circular(16),
-                                    value: snapshot.data!.experiencePoints / 10, // 10 is the next level boundary
+                                    value: snapshot.data!.experiencePoints / calculateExperienceThreshold(snapshot.data!.level),
                                     color: const Color.fromARGB(255, 87, 87, 204), 
                                     backgroundColor: Colors.grey, 
                                   ),
                                 ),
                               ),
-                              Text(
-                                "LEVEL ${snapshot.data!.level}",
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                ),
-                              )
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 100),
+                                    child: Text(
+                                      "LEVEL ${snapshot.data!.level}",
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(
+                                  "${snapshot.data!.experiencePoints} / ${calculateExperienceThreshold(snapshot.data!.level)}",
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 10,
+                                    ),   
+                                  )
+                                ],
+                              ),
                             ],
                           );
                         }
@@ -120,5 +135,17 @@ class Profile extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // there are two of these functions there should only be one really, check in game_summary.dart
+  num calculateExperienceThreshold(int level)
+  {
+    const double constant = 0.3;
+    const double exponent = 2;
+
+    var threshold = pow((level / constant), exponent);
+    threshold = threshold.toInt();
+
+    return threshold;
   }
 }

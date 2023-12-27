@@ -1,5 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
+import 'package:quant/models/user.dart';
+import 'package:quant/services/auth.dart';
+import 'package:quant/services/database.dart';
 
 class GameSummary extends StatefulWidget {
   final int correctAnswers;
@@ -12,6 +17,10 @@ class GameSummary extends StatefulWidget {
 }
 
 class _GameSummaryState extends State<GameSummary> {
+
+  DatabaseService database = DatabaseService();
+  AuthService auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return IconButton(
@@ -78,11 +87,22 @@ class _GameSummaryState extends State<GameSummary> {
               ),
               actions: [
                 TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+
+                    database.incrementExperiencePoints(auth.returnCurrentUser()!.uid, widget.correctAnswers);
+                    database.incrementGamesPlayed(auth.returnCurrentUser()!.uid);
+
+
+                    if (await checkIfLevelUp())
+                    {
+                      database.incrementLevel(auth.returnCurrentUser()!.uid);
+                      database.resetExperience(auth.returnCurrentUser()!.uid);
+                    }
+
                     Navigator.pop(context);
                     Navigator.pop(context);
             
-                    String formattedTime = _formatDuration(playTimer.elapsed);
+                    //String formattedTime = _formatDuration(playTimer.elapsed);
                     playTimer.reset();
             
                     setState(() {});
@@ -106,6 +126,33 @@ class _GameSummaryState extends State<GameSummary> {
       ),
     );
   }
+
+  
+
+  Future<bool> checkIfLevelUp() async
+  {
+    QuantUser? user = await database.quantGetUserDetails(auth.returnCurrentUser()!.uid);
+    
+    if (calculateExperienceThreshold(user!.level) <= user.experiencePoints)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  num calculateExperienceThreshold(int level)
+  {
+    const double constant = 0.3;
+    const double exponent = 2;
+
+    var threshold = pow((level / constant), exponent);
+    threshold = threshold.toInt();
+
+    return threshold;
+  }
 }
 
 String _formatDuration(Duration duration) {
@@ -117,3 +164,4 @@ String _formatDuration(Duration duration) {
     return "${twoDigits(duration.inMinutes)}:${twoDigits(duration.inSeconds.remainder(60))}";
   }
 }
+

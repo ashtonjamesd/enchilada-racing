@@ -17,7 +17,59 @@ class DatabaseService{
     });
   }
 
-Future<QuantUser?> quantGetUserDetails(String userId) async {
+  Future<void> incrementExperiencePoints(String userId, int amount) async {
+    try 
+    {
+      await userCollection.doc(userId).update({
+        'experiencePoints': FieldValue.increment(amount),
+      });
+    } 
+    catch (exception) 
+    {
+      print('Error incrementing experience points: $exception');
+    }
+  }
+
+  Future<void> incrementGamesPlayed(String userId) async {
+    try 
+    {
+      await userCollection.doc(userId).update({
+        'gamesPlayed': FieldValue.increment(1),
+      });
+    } 
+    catch (exception) 
+    {
+      print('Error incrementing games played: $exception');
+    }
+  }
+
+    Future<void> incrementLevel(String userId) async {
+    try 
+    {
+      await userCollection.doc(userId).update({
+        'level': FieldValue.increment(1),
+      });
+    } 
+    catch (exception) 
+    {
+      print('Error incrementing level: $exception');
+    }
+  }
+
+    Future<void> resetExperience(String userId) async {
+    try 
+    {
+      await userCollection.doc(userId).update({
+        'experiencePoints': 0,
+      });
+    } 
+    catch (exception) 
+    {
+      print('Error resetting experience: $exception');
+    }
+  }
+
+  Future<QuantUser?> quantGetUserDetails(String userId) async {
     try {
       DocumentSnapshot<Object?> documentSnapshot =
           await userCollection.doc(userId).get();
@@ -48,6 +100,7 @@ Future<QuantUser?> quantGetUserDetails(String userId) async {
     }
     return null;
   }
+
 
   Stream<QuerySnapshot> get users
   {
