@@ -5,27 +5,16 @@ class AuthService{
 
   final FirebaseAuth auth = FirebaseAuth.instance;
 
-  QuantUser? createQuantUser(User? user) => user != null ? QuantUser(userId: user.uid) : null;
+  QuantUser? createQuantUser(User? user) => user != null ? QuantUser(
+                                                            userId: user.uid, 
+                                                            level: 1,
+                                                            experiencePoints: 0,
+                                                            questionsAnswered: 0,
+                                                            correctQuestions: 0) : null;
 
   bool checkIfUserIsLoggedIn() => auth.currentUser != null ? true : false; // not being used
 
   String? returnCurrentUser() => auth.currentUser?.uid;
-
-  Future quantSignInAnonymously() async
-  {
-    try
-    {
-      UserCredential result = await auth.signInAnonymously();
-      User? user = result.user;
-
-      return user;
-    }
-    catch (exception)
-    {
-      print(exception.toString());
-      return null;
-    }
-  }
 
   Future? quantSignOutCurrentUser() async 
   {

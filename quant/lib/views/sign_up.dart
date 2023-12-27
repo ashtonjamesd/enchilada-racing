@@ -3,6 +3,7 @@ import 'package:quant/globals.dart';
 import 'package:quant/services/auth.dart';
 import 'package:quant/views/home.dart';
 import 'package:quant/views/sign_in.dart';
+import 'package:quant/widgets/loading.dart';
 
 class SignUp extends StatefulWidget {
   SignUp({super.key});
@@ -15,6 +16,7 @@ class _SignUpState extends State<SignUp> {
 
   AuthService auth = AuthService();
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String email = "";
   String password = "";
@@ -22,7 +24,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading == true ? const LoadingIcon() : Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -30,7 +32,7 @@ class _SignUpState extends State<SignUp> {
           Container(
             width: 320,
             height: 720,
-            color: Colors.white,// make this check if it is on a desktop monitor if so make it grey, else on a mobile make it white
+            color: Colors.white, // make this check if it is on a desktop monitor if so make it grey, else on a mobile make it white
             child: Column(
               children: [
                 const Padding(
@@ -111,18 +113,21 @@ class _SignUpState extends State<SignUp> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate())
                           {
+                            setState(() => loading = true);
                             dynamic result = await auth.quantSignUpWithEmailAndPassword(email, password);
 
                             if (result == null)
                             {
                               setState(() {
                                 errorMessage = "Invalid email or password";
+                                loading = false;
                               });
                             }
                             else
                             {
                               setState(() {
                                 errorMessage = "";
+                                loading = false;
                                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignIn()));
                               });
                             }
@@ -170,16 +175,19 @@ class _SignUpState extends State<SignUp> {
                   fontSize: 14,
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignIn()));
-                },
-                child: const Text(
-                  "Log in",
-                  style: TextStyle(
-                    color: textColour,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SignIn()));
+                  },
+                  child: const Text(
+                    "Log in",
+                    style: TextStyle(
+                      color: textColour,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ),

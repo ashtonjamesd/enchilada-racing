@@ -1,13 +1,13 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
-import 'package:quant/models/user.dart';
 import 'package:quant/services/auth.dart';
 import 'package:quant/views/home.dart';
 import 'package:quant/views/sign_up.dart';
+import 'package:quant/widgets/loading.dart';
 
 class SignIn extends StatefulWidget {
   const SignIn({super.key});
+  
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -18,14 +18,15 @@ class _SignInState extends State<SignIn> {
   final AuthService auth = AuthService();
 
   final _formKey = GlobalKey<FormState>();
+  bool loading = false;
 
   String email = "";
   String password = "";
   String errorMessage = "";
-
+  
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading == true ? const LoadingIcon() : Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -113,18 +114,22 @@ class _SignInState extends State<SignIn> {
                       child: TextButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()){
+                            
+                            setState(() => loading = true);
                             dynamic result = await auth.quantSignInWithEmailAndPassword(email, password);
-
+                            print("Signed in with ${auth.returnCurrentUser()}");
                             if (result == null)
                             {
                               setState(() {
                                 errorMessage = "Invalid email or password";
+                                loading = false;
                               });
                             }
                             else
                             {
                               setState(() {
                                 errorMessage = "";
+                                loading = false;
                               });
                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Home()));
                             }
@@ -135,30 +140,6 @@ class _SignInState extends State<SignIn> {
                           size: 18,
                           color: Colors.white,
                         )
-                      ),
-                    ),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: TextButton(
-                    onPressed: () async {
-                        User? result = await auth.quantSignInAnonymously();
-                        
-                        if (result != null){
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home()));
-                          print("Signed in anonymously with:  ${result.uid}");
-                        }
-                        else
-                        {
-                          print("Error: Unable to sign in");
-                        }
-                    },
-                    child: Text(
-                      "or enter anonymously",
-                        style: TextStyle(
-                        color: textColour.withOpacity(0.8), 
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -187,16 +168,19 @@ class _SignInState extends State<SignIn> {
                   fontSize: 14,
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUp()));
-                },
-                child: const Text(
-                  "Sign Up",
-                  style: TextStyle(
-                    color: textColour,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
+              Padding(
+                padding: const EdgeInsets.only(left: 8),
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SignUp()));
+                  },
+                  child: const Text(
+                    "Sign Up",
+                    style: TextStyle(
+                      color: textColour,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                    ),
                   ),
                 ),
               ),
