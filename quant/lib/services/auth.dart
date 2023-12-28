@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:quant/models/user.dart';
+import 'package:quant/models/quant_user.dart';
 import 'package:quant/services/database.dart';
 
 class AuthService{
@@ -12,7 +12,7 @@ class AuthService{
                                                             title: "Apprentice",
                                                             level: 1,
                                                             experiencePoints: 0,
-                                                            questionsAnswered: 0) : null;
+                                                            problemsSolved: 0) : null;
 
   bool checkIfUserIsLoggedIn() => auth.currentUser != null ? true : false; // not being used
 

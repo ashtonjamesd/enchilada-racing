@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quant/models/user.dart';
+import 'package:quant/models/quant_user.dart';
 import 'package:quant/views/home.dart';
 import 'package:quant/views/sign_in.dart';
 

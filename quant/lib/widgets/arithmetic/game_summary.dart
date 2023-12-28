@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
-import 'package:quant/models/user.dart';
+import 'package:quant/models/quant_user.dart';
 import 'package:quant/services/auth.dart';
 import 'package:quant/services/database.dart';
 
@@ -88,11 +88,6 @@ class _GameSummaryState extends State<GameSummary> {
               actions: [
                 TextButton(
                   onPressed: () async {
-
-                    database.incrementExperiencePoints(auth.returnCurrentUser()!.uid, widget.correctAnswers);
-                    database.incrementGamesPlayed(auth.returnCurrentUser()!.uid);
-
-
                     if (await checkIfLevelUp())
                     {
                       database.incrementLevel(auth.returnCurrentUser()!.uid);

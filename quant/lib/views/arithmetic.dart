@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
 import 'package:quant/models/question.dart';
 import 'package:quant/services/arithmetic.dart';
+import 'package:quant/services/auth.dart';
+import 'package:quant/services/database.dart';
 import 'package:quant/widgets/arithmetic/game_summary.dart';
 
 class Arithmetic extends StatefulWidget {
@@ -18,15 +20,17 @@ class _ArithmeticState extends State<Arithmetic> {
   Color answerIconColour = Colors.white;
 
   int correctAnswers = 0;
-  int questionsAnswered = 0;
   int incorrectAnswers = 0;
 
   @override
   Widget build(BuildContext context) {
     
     ArithmeticQuestion arithmeticQuestion = arithmetic.generateQuestion();
-    TextEditingController answerController = TextEditingController();
 
+    DatabaseService database = DatabaseService();
+    AuthService auth = AuthService();
+
+    TextEditingController answerController = TextEditingController();
 
     return Scaffold(
     backgroundColor: primaryBackgroundColour,
@@ -102,10 +106,12 @@ class _ArithmeticState extends State<Arithmetic> {
                           ),
                           child: IconButton(
                             onPressed: () {
-                              questionsAnswered = questionsAnswered + 1;
-          
                               if (answerController.text == arithmeticQuestion.answer.toString())
                               {
+                                database.incrementProblemsSolved(auth.returnCurrentUser()!.uid);
+                                database.checkForAchievements(auth.returnCurrentUser()!.uid);
+
+                                database.incrementExperiencePoints(auth.returnCurrentUser()!.uid, 1);
                                 
                                 setState(() {
                                   correctAnswers = correctAnswers + 1;

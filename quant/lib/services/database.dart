@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:quant/models/user.dart';
+import 'package:quant/models/quant_user.dart';
 
 class DatabaseService{
 
@@ -12,8 +12,9 @@ class DatabaseService{
       'username' : username,
       'level' : level,
       'experiencePoints' : experiencePoints,
-      'questionsAnswered' : questionsAnswered,
+      'problemsSolved' : questionsAnswered,
       'title' : title,
+      'problemSolverAchievement' : 0
     });
   }
 
@@ -30,16 +31,16 @@ class DatabaseService{
     }
   }
 
-  Future<void> incrementGamesPlayed(String userId) async {
+  Future<void> incrementProblemsSolved(String userId) async {
     try 
     {
       await userCollection.doc(userId).update({
-        'gamesPlayed': FieldValue.increment(1),
+        'problemsSolved': FieldValue.increment(1),
       });
     } 
     catch (exception) 
     {
-      print('Error incrementing games played: $exception');
+      print('Error incrementing problems solved: $exception');
     }
   }
 
@@ -69,6 +70,35 @@ class DatabaseService{
     }
   }
 
+  Future<void> checkForAchievements(String userId) async 
+  {
+    try 
+    {
+      DocumentSnapshot userData = await userCollection.doc(userId).get();
+
+      if (userData.exists && userData.data() != null) 
+      {
+        int problemsSolved = userData.get(["problemsSolved"]);
+
+        if (problemsSolved > 20) 
+        {
+          await userCollection.doc(userId).update({
+            'problemSolverAchievement': 1,
+            //I/flutter (13123): Error adding achievement: 
+            //'package:cloud_firestore_platform_interface/src/platform_interface/platform_interface_document_snapshot.dart': 
+            //Failed assertion: line 77 pos 7: 'field is String || field is FieldPath': 
+            //Supported [field] types are [String] and [FieldPath]
+          });
+        }
+      }
+    } 
+    catch (exception) 
+    {
+      print('Error adding achievement: $exception');
+    }
+  }
+
+
   Future<QuantUser?> quantGetUserDetails(String userId) async {
     try {
       DocumentSnapshot<Object?> documentSnapshot =
@@ -80,11 +110,11 @@ class DatabaseService{
         String username = (documentSnapshot.data() as Map<String, dynamic>?)?['username'];
         int level = (documentSnapshot.data() as Map<String, dynamic>?)?['level'];
         int experiencePoints = (documentSnapshot.data() as Map<String, dynamic>?)?['experiencePoints'];
-        int questionsAnswered = (documentSnapshot.data() as Map<String, dynamic>?)?['questionsAnswered'];
+        int problemsSolved = (documentSnapshot.data() as Map<String, dynamic>?)?['problemsSolved'];
         String title = (documentSnapshot.data() as Map<String, dynamic>?)?['title'];
 
         QuantUser user = QuantUser(username: username, 
-                                    questionsAnswered: questionsAnswered, 
+                                    problemsSolved: problemsSolved, 
                                     level: level, 
                                     title: title,
                                     experiencePoints: experiencePoints, 
