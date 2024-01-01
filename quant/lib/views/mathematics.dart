@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
 import 'package:quant/models/question.dart';
-import 'package:quant/services/arithmetic.dart';
+import 'package:quant/services/mathematics.dart';
 import 'package:quant/services/auth.dart';
 import 'package:quant/services/database.dart';
 import 'package:quant/widgets/arithmetic/game_summary.dart';
+import 'package:quant/widgets/arithmetic/topic.dart';
 
-class Arithmetic extends StatefulWidget {
-  Arithmetic({super.key});
+class Mathematics extends StatefulWidget {
+  const Mathematics({Key? key, required this.topic});
+
+  final Topic topic;
 
   @override
-  State<Arithmetic> createState() => _ArithmeticState();
+  State<Mathematics> createState() => _MathematicsState();
 }
 
-class _ArithmeticState extends State<Arithmetic> {
+class _MathematicsState extends State<Mathematics> {
   ArithmeticService arithmetic = ArithmeticService();
 
   IconData answerIcon = Icons.question_mark;
@@ -25,7 +28,7 @@ class _ArithmeticState extends State<Arithmetic> {
   @override
   Widget build(BuildContext context) {
     
-    ArithmeticQuestion arithmeticQuestion = arithmetic.generateQuestion();
+    MathQuestion mathQuestion = arithmetic.generateQuestion(widget.topic.title);
 
     DatabaseService database = DatabaseService();
     AuthService auth = AuthService();
@@ -33,18 +36,18 @@ class _ArithmeticState extends State<Arithmetic> {
     TextEditingController answerController = TextEditingController();
 
     return Scaffold(
-    backgroundColor: primaryBackgroundColour,
+      backgroundColor: primaryBackgroundColour,
       appBar: AppBar(
-        title: const Text(
-          "Solving Algebraic Equations",
-          style: TextStyle(
+        title: Text(
+          widget.topic.title,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
         backgroundColor: containerColour,
-        leading: GameSummary(correctAnswers: correctAnswers, incorrectAnswers: incorrectAnswers)
+        leading: GameSummary(correctAnswers: correctAnswers, incorrectAnswers: incorrectAnswers),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +65,7 @@ class _ArithmeticState extends State<Arithmetic> {
                   Padding(
                     padding: const EdgeInsets.only(left: 16, top: 16),
                     child: Text(
-                      arithmeticQuestion.question,
+                      mathQuestion.question,
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -106,7 +109,7 @@ class _ArithmeticState extends State<Arithmetic> {
                           ),
                           child: IconButton(
                             onPressed: () {
-                              if (answerController.text == arithmeticQuestion.answer.toString())
+                              if (answerController.text == mathQuestion.answer.toString())
                               {
                                 database.incrementProblemsSolved(auth.returnCurrentUser()!.uid);
                                 database.checkForAchievements(auth.returnCurrentUser()!.uid);
@@ -129,7 +132,7 @@ class _ArithmeticState extends State<Arithmetic> {
                               }
           
                               setState(() {
-                                arithmeticQuestion = arithmetic.generateQuestion();
+                                mathQuestion = arithmetic.generateQuestion(widget.topic.title);
                               });
                             }, 
                             icon: const Icon(

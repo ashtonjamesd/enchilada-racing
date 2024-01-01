@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quant/globals.dart';
-import 'package:quant/views/arithmetic.dart';
+import 'package:quant/views/mathematics.dart';
+import 'package:quant/views/mathematics_topics.dart';
 
 class PlayContainer extends StatefulWidget {
   const PlayContainer({super.key});
@@ -17,8 +18,7 @@ class _PlayContainerState extends State<PlayContainer> {
         padding: const EdgeInsets.only(top: 16),
         child: TextButton(
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => Arithmetic()));
-            playTimer.start();
+            Navigator.push(context, MaterialPageRoute(builder: (context) => MathematicsTopics()));
           },
           child: Container(
             width: 360,
@@ -30,7 +30,7 @@ class _PlayContainerState extends State<PlayContainer> {
             child: Padding(
               padding: const EdgeInsets.only(left: 16, top: 4),
               child: Text(
-                "Arithmetic",
+                "Mathematics",
                 style: primaryFont(
                   textStyle: const TextStyle(
                     color: Colors.white,

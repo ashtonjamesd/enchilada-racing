@@ -8,8 +8,8 @@ import 'dart:math';
 class Profile extends StatelessWidget {
   Profile({super.key});
 
-  AuthService auth = AuthService();
-  DatabaseService database = DatabaseService();
+  final AuthService auth = AuthService();
+  final DatabaseService database = DatabaseService();
 
   @override
   Widget build(BuildContext context) {

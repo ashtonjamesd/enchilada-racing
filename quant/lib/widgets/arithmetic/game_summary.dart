@@ -5,6 +5,7 @@ import 'package:quant/globals.dart';
 import 'package:quant/models/quant_user.dart';
 import 'package:quant/services/auth.dart';
 import 'package:quant/services/database.dart';
+import 'package:quant/views/home.dart';
 
 class GameSummary extends StatefulWidget {
   final int correctAnswers;
@@ -94,9 +95,8 @@ class _GameSummaryState extends State<GameSummary> {
                       database.resetExperience(auth.returnCurrentUser()!.uid);
                     }
 
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-            
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Home()));
+
                     //String formattedTime = _formatDuration(playTimer.elapsed);
                     playTimer.reset();
             
