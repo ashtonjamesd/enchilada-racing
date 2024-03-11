@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
-Future main() async => runApp(const App());
+import 'home/home.dart';
 
-class App extends StatelessWidget {
-  const App({super.key});
+Future main() async => runApp(const SylvanianApp());
+
+class SylvanianApp extends StatelessWidget {
+  const SylvanianApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
+      home: Home(),
     );
   }
 }
