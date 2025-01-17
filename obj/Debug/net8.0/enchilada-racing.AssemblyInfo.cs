@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("enchilada-racing")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cfc4c15c2875c1a8bcdb2993f00c0d98241ed7a0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b993cd55e437a4e28d63837e2389b10c80523255")]
 [assembly: System.Reflection.AssemblyProductAttribute("enchilada-racing")]
 [assembly: System.Reflection.AssemblyTitleAttribute("enchilada-racing")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,19 +1,25 @@
+using System.Security.Cryptography;
+
 namespace enchilada_racing.src;
 
 class EnchiladaRacingApp {
-    private readonly EnchiladaController controller = new();
+    private readonly EnchiladaController Controller = new();
+    private static Dictionary<string, Func<bool>> Options = [];
+
+    public EnchiladaRacingApp() {
+        Options = new Dictionary<string, Func<bool>> {
+            { "Add Race", () => Controller.AddEnchiladaRace() },
+            { "Add Tournament", () => Controller.AddEnchiladaTournament() },
+            { "View Records", () => Controller.ViewRecords() }
+        };
+    }
 
     public void Run() {
         for (;;) {
-            Console.WriteLine($" -- {Constants.AppName} -- \n");
-
-            var racers = controller.GetRacers();
-
-            foreach (var racer in racers) {
-                Console.WriteLine($"{racer.Id} : {racer.Name}");
-            }
-
-            Console.ReadKey();
+            var choice = Utils.GetItemChoice(Options.Keys.ToList(), $" -- {Constants.AppName} -- \n");
+           
+            var action = Options[choice];
+            action();
         }
     }
 }

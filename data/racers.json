@@ -1,10 +1,10 @@
 [
     {
-        "racerId": "AD",
+        "racerId": 0,
         "racerName": "Ashton Dunderdale"
     },
     {
-        "racerId": "HO",
+        "racerId": 1,
         "racerName": "Harrison O'Leary"
     }
 ]

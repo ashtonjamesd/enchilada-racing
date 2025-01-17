@@ -1,10 +1,10 @@
 using System.Text.Json.Serialization;
 
-internal class EnchiladaRacer(string name, string id)
+internal class EnchiladaRacer()
 {
     [JsonPropertyName("racerId")]
-    public string Id { get; set; } = id;
-    
+    public int Id { get; set; }
+
     [JsonPropertyName("racerName")]
-    public string Name { get; set; } = name;
+    public string Name { get; set; }
 }

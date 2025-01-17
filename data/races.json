@@ -1,0 +1,36 @@
+[
+  {
+    "raceId": 0,
+    "raceNum": 1,
+    "tournamentId": 0,
+    "raceEntries": [
+      {
+        "racerId": 0,
+        "raceTime": "test",
+        "isKnockout": true
+      },
+      {
+        "racerId": 1,
+        "raceTime": "test",
+        "isKnockout": false
+      }
+    ]
+  },
+  {
+    "raceId": 1,
+    "raceNum": 2,
+    "tournamentId": 0,
+    "raceEntries": [
+      {
+        "racerId": 0,
+        "raceTime": "testasdasdsada",
+        "isKnockout": false
+      },
+      {
+        "racerId": 1,
+        "raceTime": "tsadasdsaasdsa",
+        "isKnockout": true
+      }
+    ]
+  }
+]
