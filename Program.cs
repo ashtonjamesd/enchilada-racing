@@ -1,5 +1,10 @@
-﻿internal class Program {
+﻿using enchilada_racing.src;
+
+namespace enchilada_racing;
+
+internal class Program {
     static void Main() {
-        Console.WriteLine("Hello, World!");
+        var app = new EnchiladaRacingApp();
+        app.Run();
     }
 }
