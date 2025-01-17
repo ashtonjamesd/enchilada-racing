@@ -1,5 +1,6 @@
 internal static class Utils {
-    internal static void ReadKey() {
+    internal static void ReadKey(string message) {
+        Console.WriteLine(message);
         Console.WriteLine("    Press enter to continue.");
         Console.ReadKey();
     }

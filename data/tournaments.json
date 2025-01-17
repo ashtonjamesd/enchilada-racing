@@ -6,5 +6,12 @@
       1
     ],
     "tournamentName": "enchilada debut"
+  },
+  {
+    "tournamentId": 1,
+    "racers": [
+      0
+    ],
+    "tournamentName": "test"
   }
 ]

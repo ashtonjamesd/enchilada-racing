@@ -5,7 +5,7 @@ internal class EnchiladaRace {
     public int Id { get; set; }
 
     [JsonPropertyName("raceNum")]
-    public int RaceNum { get; set; }
+    public int RaceNumber { get; set; }
 
     [JsonPropertyName("tournamentId")]
     public int TournamentId { get; set; }
@@ -19,7 +19,7 @@ internal class EnchiladaRaceEntry {
     public int RacerId { get; set; }
 
     [JsonPropertyName("raceTime")]
-    public string raceTime { get; set; }
+    public string RaceTime { get; set; }
 
     [JsonPropertyName("isKnockout")]
     public bool IsKnockout { get; set; }

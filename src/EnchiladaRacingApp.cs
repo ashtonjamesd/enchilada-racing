@@ -8,9 +8,11 @@ class EnchiladaRacingApp {
 
     public EnchiladaRacingApp() {
         Options = new Dictionary<string, Func<bool>> {
-            { "Add Race", () => Controller.AddEnchiladaRace() },
-            { "Add Tournament", () => Controller.AddEnchiladaTournament() },
-            { "View Records", () => Controller.ViewRecords() }
+            { "Add Race",         () => Controller.AddEnchiladaRace() },
+            { "Add Tournament",   () => Controller.AddEnchiladaTournament() },
+            { "View Races",       () => Controller.ViewRecords() },
+            { "View Racers",      () => Controller.ViewRacers() },
+            { "View Tournaments", () => Controller.ViewTournaments() },
         };
     }
 
