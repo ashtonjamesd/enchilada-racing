@@ -69,6 +69,21 @@ internal class EnchiladaController {
         return tournamentRaces;
     }
 
+    internal List<EnchiladaRaceEntry> GetRacesForRacer(int racerId) {
+        var races = data.GetRaces();
+
+        List<EnchiladaRaceEntry> entries = [];
+        foreach (var race in races) {
+            foreach (var entry in race.RaceEntries) {
+                if (entry.RacerId == racerId) {
+                    entries.Add(entry);
+                }
+            }
+        }
+
+        return entries;
+    }
+
     internal bool AddEnchiladaTournament() {
         Console.Clear();
         var tournamentName = Utils.GetInput("Enter tournament name: ");
@@ -148,13 +163,35 @@ internal class EnchiladaController {
         return true;
     }
 
+    internal double GetSecondsFromRaceTime(string raceTime) {
+        var parts = raceTime.Split(":");
+
+        var seconds = int.Parse(parts[0]);
+        var milliseconds = int.Parse(parts[1]);
+
+        return seconds + (milliseconds / 1000);
+    }
+
     internal bool ViewRacers() {
         Console.Clear();
         Console.WriteLine("Enchilada Racers\n");
 
         var racers = data.GetRacers();
         foreach (var racer in racers) {
+            var races = GetRacesForRacer(racer.Id);
+
+            double bestTime = 100;
+            string bestRaceTime = races.FirstOrDefault()?.RaceTime ?? "";
+            foreach (var race in races) {
+                var raceTime = GetSecondsFromRaceTime(race.RaceTime); 
+                if (raceTime < bestTime) {
+                    bestTime = raceTime;
+                    bestRaceTime = race.RaceTime;
+                }
+            }
+
             Console.WriteLine($"{racer.Id}: {racer.Name} ({racer.NickName})");
+            Console.WriteLine($"  Best Time: {bestRaceTime}\n");
         }
 
         Utils.ReadKey("");
