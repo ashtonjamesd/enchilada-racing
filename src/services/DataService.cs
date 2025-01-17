@@ -42,6 +42,14 @@ internal class DataService {
     public void SetTracks(List<EnchiladaTrack> tracks) {
         WriteJsonData(tracks, "tracks.json");
     }
+
+    public List<EnchiladaMemo> GetMemos() {
+        return GetJsonData<List<EnchiladaMemo>>("memos.json");;
+    }
+
+    public void SetMemos(List<EnchiladaMemo> tracks) {
+        WriteJsonData(tracks, "memos.json");
+    }
         
     private static void WriteJsonData<T>(T value, string path) {
         var json = JsonSerializer.Serialize(value, new JsonSerializerOptions {

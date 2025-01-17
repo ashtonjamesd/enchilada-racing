@@ -39,7 +39,7 @@ internal static class Utils {
             Console.WriteLine($"{header}\n");
 
             for (int i = 0; i < items.Count; i++) {
-                Console.WriteLine(idx == i ? $"> {items[i]}" : items[i]);
+                Console.WriteLine(idx == i ? $">  {items[i]}" : $"  {items[i]}");
             }
 
             var input = Console.ReadKey();

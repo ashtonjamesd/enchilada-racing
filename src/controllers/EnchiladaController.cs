@@ -31,9 +31,9 @@ internal class EnchiladaController {
         }
 
         var tracks = data.GetTracks();
-        var trackNames = tracks.Select(x => x.TrackName).ToList();
+        var trackNames = tracks.Select(x => x.Name).ToList();
         var choice = Utils.GetItemChoice(trackNames, "Select a track for this race");
-        var selectedTrack = tracks.FirstOrDefault(x => x.TrackName == choice);
+        var selectedTrack = tracks.FirstOrDefault(x => x.Name == choice);
 
         var races = data.GetRaces();
         var tournamentRaces = GetRacesForTournament(selectedTournament!);
@@ -87,6 +87,7 @@ internal class EnchiladaController {
     internal bool AddEnchiladaTournament() {
         Console.Clear();
         var tournamentName = Utils.GetInput("Enter tournament name: ");
+        var tournamentDesc = Utils.GetInput("Enter tournament description: ");
 
         var tournaments = data.GetTournaments();
 
@@ -96,7 +97,6 @@ internal class EnchiladaController {
         List<EnchiladaRacer> selectedRacers = [];
         while (true) {
             var selectedRacer = Utils.GetItemChoice(racerNames, "Select racers in this tournament");
-
             var racer = racers.FirstOrDefault(x => x.Name == selectedRacer);
             selectedRacers.Add(racer!);
 
@@ -106,10 +106,11 @@ internal class EnchiladaController {
         }
 
         var tournament = new EnchiladaTournament() {
-            RacerIds = [.. selectedRacers.Select(x => x.Id)],
             Name = tournamentName,
+            Desc = tournamentDesc,
+            DateStarted = DateTime.Now,
+            RacerIds = [.. selectedRacers.Select(x => x.Id)],
             Id = tournaments.Count != 0 ? tournaments.Max(x => x.Id) + 1 : 0,
-            DateStarted = DateTime.Now
         };
 
         tournaments.Add(tournament);
@@ -147,7 +148,7 @@ internal class EnchiladaController {
             Console.Write($"\nRace:  {race.RaceNumber}");
 
             var track = data.GetTrack(race.TrackId);
-            Console.Write($"\nTrack: {track!.TrackName}");
+            Console.Write($"\nTrack: {track!.Name}");
             
             foreach (var entry in race.RaceEntries) {
                 var racer = data.GetRacer(entry.RacerId);
@@ -207,13 +208,79 @@ internal class EnchiladaController {
         foreach (var tournament in tournaments) {
             var racers = GetRacersForTournament(tournament);
             Console.WriteLine($"\n{tournament.Name} | {tournament.DateStarted.Date}");
+            Console.WriteLine($"  {tournament.Desc}\n");
 
             foreach (var racer in racers) {
                 Console.WriteLine($"  {racer.Id}: {racer.Name}");
             }
+            Console.WriteLine();
         }
 
         Utils.ReadKey("");
         return true;
+    }
+
+    internal bool ViewTracks() {
+        Console.Clear();
+        Console.WriteLine("Enchilada Tracks\n");
+
+        var tracks = data.GetTracks();
+
+        foreach (var track in tracks) {
+            Console.WriteLine($"{track.Id}: {track.Name}");
+            Console.WriteLine($"  {track.Desc}\n");
+        }
+
+        Utils.ReadKey("");
+        return true;
+    }
+
+    internal bool AddMemo() {
+        Console.Clear();
+
+        var memoTitle = Utils.GetInput("Enter memo title: ");
+        var memoDesc = Utils.GetInput("Enter memo desc: ");
+        var memoAuthor = Utils.GetInput("Who are you? (author): ");
+
+        var memo = new EnchiladaMemo() {
+            Title = memoTitle,
+            Description = memoDesc,
+            Author = memoAuthor,
+            DateCreated = DateTime.Now
+        };
+
+        var memos = data.GetMemos();
+        memos.Add(memo);
+        data.SetMemos(memos);
+
+       return true; 
+    }
+
+    internal bool ViewMemo() {
+        Console.Clear();
+        Console.WriteLine("Enchilada Memos:\n");
+        
+        var memos = data.GetMemos();
+
+        foreach (var memo in memos) {
+            Console.WriteLine($"{memo.Title}");
+            Console.WriteLine($"  by {memo.Author}");
+
+            Console.WriteLine($"\n{FormatDescription(memo.Description, 80)}");
+            Console.WriteLine(new string('-', 48) + "\n");
+        }
+
+        Utils.ReadKey("");
+        return true;
+    }
+
+    private static string FormatDescription(string description, int maxLength) {
+        var lines = new List<string>();
+
+        for (int i = 0; i < description.Length; i += maxLength) {
+            lines.Add("  " + description.Substring(i, Math.Min(maxLength, description.Length - i)));
+        }
+
+        return string.Join("\n", lines);
     }
 }

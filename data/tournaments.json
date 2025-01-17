@@ -6,7 +6,8 @@
       0,
       1
     ],
-    "tournamentName": "enchilada debut"
+    "tournamentName": "enchilada debut",
+    "tournamentDesc": "the initial tournament of five for the enchilada racing saga"
   },
   {
     "tournamentId": 2,
@@ -15,6 +16,7 @@
       0,
       1
     ],
-    "tournamentName": "enchilada express"
+    "tournamentName": "enchilada express",
+    "tournamentDesc": "the very controversial knockouty, cut short tournament (caused a stir with the peppers)."
   }
 ]

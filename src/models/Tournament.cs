@@ -13,4 +13,7 @@ internal class EnchiladaTournament {
 
     [JsonPropertyName("tournamentName")]
     public string Name { get; set; }
+
+    [JsonPropertyName("tournamentDesc")]
+    public string Desc { get; set; }
 }

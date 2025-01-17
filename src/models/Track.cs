@@ -5,8 +5,8 @@ internal class EnchiladaTrack {
     public int Id { get; set; }
 
     [JsonPropertyName("trackName")]
-    public string TrackName { get; set; }
+    public string Name { get; set; }
 
     [JsonPropertyName("trackDescription")]
-    public string TrackDescription { get; set; }
+    public string Desc { get; set; }
 }
