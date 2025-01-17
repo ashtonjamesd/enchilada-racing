@@ -10,6 +10,9 @@ internal class EnchiladaRace {
     [JsonPropertyName("tournamentId")]
     public int TournamentId { get; set; }
 
+    [JsonPropertyName("trackId")]
+    public int TrackId { get; set; }
+
     [JsonPropertyName("raceEntries")]
     public List<EnchiladaRaceEntry> RaceEntries { get; set; } = [];
 }

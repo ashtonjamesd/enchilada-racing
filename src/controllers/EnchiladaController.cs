@@ -16,12 +16,9 @@ internal class EnchiladaController {
         var selectedTournamentName = Utils.GetItemChoice(tournamentNames, "Select tournament for this race:");
         var selectedTournament = tournaments.FirstOrDefault(x => x.Name == selectedTournamentName);
 
-        var participatingRacers = GetRacersForTournament(selectedTournament!);
-
-        var races = data.GetRaces();
-        var tournamentRaces = GetRacesForTournament(selectedTournament!);
-
         List<EnchiladaRaceEntry> entries = [];
+        var participatingRacers = GetRacersForTournament(selectedTournament!);
+        
         foreach (var racer in participatingRacers) {
             Console.Clear();
             Console.WriteLine($"For Racer: {racer.Name}\n");
@@ -33,9 +30,20 @@ internal class EnchiladaController {
             entries.Add(entry);
         }
 
+        var tracks = data.GetTracks();
+        var trackNames = tracks.Select(x => x.TrackName).ToList();
+        var choice = Utils.GetItemChoice(trackNames, "Select a track for this race");
+        var selectedTrack = tracks.FirstOrDefault(x => x.TrackName == choice);
+
+        var races = data.GetRaces();
+        var tournamentRaces = GetRacesForTournament(selectedTournament!);
+
         var id = races.Count != 0 ? races.Max(x => x.Id) + 1 : 0;
+
         var raceNum = tournamentRaces.Count != 0 ? tournamentRaces.Max(x => x.RaceNumber) + 1 : 1;
-        var newRace = raceFactory.Create(selectedTournament!.Id, entries, id, raceNum);
+
+        var newRace = raceFactory.Create(selectedTournament!.Id, entries, id, raceNum, selectedTrack!.Id);
+        races.Add(newRace);
 
         data.SetRaces(races);
 
@@ -58,7 +66,7 @@ internal class EnchiladaController {
         var tournamentRaces = races
             .Where(x => x.TournamentId == tournament.Id).ToList();
 
-        return races;
+        return tournamentRaces;
     }
 
     internal bool AddEnchiladaTournament() {
@@ -85,7 +93,8 @@ internal class EnchiladaController {
         var tournament = new EnchiladaTournament() {
             RacerIds = [.. selectedRacers.Select(x => x.Id)],
             Name = tournamentName,
-            Id = tournaments.Count != 0 ? tournaments.Max(x => x.Id) + 1 : 0
+            Id = tournaments.Count != 0 ? tournaments.Max(x => x.Id) + 1 : 0,
+            DateStarted = DateTime.Now
         };
 
         tournaments.Add(tournament);
@@ -120,7 +129,10 @@ internal class EnchiladaController {
         Console.Clear();
         Console.WriteLine($"{selectedTournament!.Name}\n");
         foreach (var race in races) {
-            Console.Write($"\nRace: {race.RaceNumber}");
+            Console.Write($"\nRace:  {race.RaceNumber}");
+
+            var track = data.GetTrack(race.TrackId);
+            Console.Write($"\nTrack: {track!.TrackName}");
             
             foreach (var entry in race.RaceEntries) {
                 var racer = data.GetRacer(entry.RacerId);
@@ -142,7 +154,7 @@ internal class EnchiladaController {
 
         var racers = data.GetRacers();
         foreach (var racer in racers) {
-            Console.WriteLine($"{racer.Id}: {racer.Name}");
+            Console.WriteLine($"{racer.Id}: {racer.Name} ({racer.NickName})");
         }
 
         Utils.ReadKey("");
@@ -157,7 +169,7 @@ internal class EnchiladaController {
 
         foreach (var tournament in tournaments) {
             var racers = GetRacersForTournament(tournament);
-            Console.WriteLine($"\n{tournament.Name}");
+            Console.WriteLine($"\n{tournament.Name} | {tournament.DateStarted.Date}");
 
             foreach (var racer in racers) {
                 Console.WriteLine($"  {racer.Id}: {racer.Name}");

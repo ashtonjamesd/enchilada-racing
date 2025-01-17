@@ -1,10 +1,12 @@
 [
     {
         "racerId": 0,
-        "racerName": "Ashton Dunderdale"
+        "racerName": "Ashton Dunderdale",
+        "nickName": "spicy leppers"
     },
     {
         "racerId": 1,
-        "racerName": "Harrison O'Leary"
+        "racerName": "Harrison O'Leary",
+        "nickName": "9 million sausages"
     }
 ]

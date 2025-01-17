@@ -1,6 +1,7 @@
 [
   {
     "tournamentId": 0,
+    "dateStarted": "2025-01-17T22:16:51.2804544+00:00",
     "racers": [
       0,
       1
@@ -8,10 +9,12 @@
     "tournamentName": "enchilada debut"
   },
   {
-    "tournamentId": 1,
+    "tournamentId": 2,
+    "dateStarted": "2025-01-17T22:16:51.2804544+00:00",
     "racers": [
-      0
+      0,
+      1
     ],
-    "tournamentName": "test"
+    "tournamentName": "enchilada express"
   }
 ]

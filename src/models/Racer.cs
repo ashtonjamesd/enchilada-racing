@@ -7,4 +7,7 @@ internal class EnchiladaRacer()
 
     [JsonPropertyName("racerName")]
     public string Name { get; set; }
+
+    [JsonPropertyName("nickName")]
+    public string NickName { get; set; }
 }

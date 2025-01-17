@@ -15,9 +15,12 @@ internal class DataService {
         return GetRacers().FirstOrDefault(x => x.Id == id);
     }
 
+    public EnchiladaTrack? GetTrack(int id) {
+        return GetTracks().FirstOrDefault(x => x.Id == id);
+    }
+
     public List<EnchiladaTournament> GetTournaments() {
-        var tournaments = GetJsonData<List<EnchiladaTournament>>("tournaments.json");
-        return tournaments;
+        return GetJsonData<List<EnchiladaTournament>>("tournaments.json");;
     }
 
     public void SetTournaments(List<EnchiladaTournament> tournaments) {
@@ -25,12 +28,19 @@ internal class DataService {
     }
 
     public List<EnchiladaRace> GetRaces() {
-        var races = GetJsonData<List<EnchiladaRace>>("races.json");
-        return races;
+        return GetJsonData<List<EnchiladaRace>>("races.json");;
     }
 
     public void SetRaces(List<EnchiladaRace> races) {
         WriteJsonData(races, "races.json");
+    }
+
+    public List<EnchiladaTrack> GetTracks() {
+        return GetJsonData<List<EnchiladaTrack>>("tracks.json");;
+    }
+
+    public void SetTracks(List<EnchiladaTrack> tracks) {
+        WriteJsonData(tracks, "tracks.json");
     }
         
     private static void WriteJsonData<T>(T value, string path) {
