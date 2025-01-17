@@ -1,0 +1,15 @@
+C:\Users\rxgqq\projects\enchilada-racing\bin\Debug\net8.0\enchilada-racing.exe
+C:\Users\rxgqq\projects\enchilada-racing\bin\Debug\net8.0\enchilada-racing.deps.json
+C:\Users\rxgqq\projects\enchilada-racing\bin\Debug\net8.0\enchilada-racing.runtimeconfig.json
+C:\Users\rxgqq\projects\enchilada-racing\bin\Debug\net8.0\enchilada-racing.dll
+C:\Users\rxgqq\projects\enchilada-racing\bin\Debug\net8.0\enchilada-racing.pdb
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\enchilada-racing.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\enchilada-racing.AssemblyInfoInputs.cache
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\enchilada-racing.AssemblyInfo.cs
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\enchilada-racing.csproj.CoreCompileInputs.cache
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\enchilada-racing.sourcelink.json
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\enchilada-racing.dll
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\refint\enchilada-racing.dll
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\enchilada-racing.pdb
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\enchilada-racing.genruntimeconfig.cache
+C:\Users\rxgqq\projects\enchilada-racing\obj\Debug\net8.0\ref\enchilada-racing.dll

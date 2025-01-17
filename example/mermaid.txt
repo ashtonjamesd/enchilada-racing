@@ -1,3 +1,0 @@
-class Fish {
-    - string property(param, param)
-}

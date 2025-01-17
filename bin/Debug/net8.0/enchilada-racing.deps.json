@@ -6,15 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v8.0": {
-      "mersh/1.0.0": {
+      "enchilada-racing/1.0.0": {
         "runtime": {
-          "mersh.dll": {}
+          "enchilada-racing.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "mersh/1.0.0": {
+    "enchilada-racing/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
